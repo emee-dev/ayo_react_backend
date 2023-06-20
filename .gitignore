@@ -1,0 +1,6 @@
+node_modules
+.env
+.rest
+test.js
+sample.data.js
+.vscode
