@@ -8,8 +8,6 @@ const connectionUrl =
 
 const connectDb = async (cb) => {
   try {
-    console.log('Env', process.env.NODE_ENV);
-    console.log('Connection String', connectionUrl);
     mongoose.set('strictQuery', true);
     mongoose.connect(connectionUrl, {
       useNewUrlParser: true,
