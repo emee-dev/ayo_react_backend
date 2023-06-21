@@ -17,42 +17,40 @@ exports.register = async (req, res) => {
       role,
     } = req.body;
 
-    console.log(req.body);
+    const exist = await User.findOne({ email });
+    if (exist)
+      return res
+        .status(400)
+        .send({ message: 'User exists, login to continue' });
 
-    // const exist = await User.findOne({ email });
-    // if (exist)
-    //   return res
-    //     .status(400)
-    //     .send({ message: 'User exists, login to continue' });
+    let hashPassword = await hashpassword(password);
 
-    // let hashPassword = await hashpassword(password);
+    let newUser = new User({
+      email: email.toLowerCase(),
+      password: hashPassword,
+      firstname,
+      lastname,
+      gender,
+      phone,
+      role: role.toUpperCase(),
+    });
 
-    // let newUser = new User({
-    //   email: email.toLowerCase(),
-    //   password: hashPassword,
-    //   firstname,
-    //   lastname,
-    //   gender,
-    //   phone,
-    //   role: role.toUpperCase(),
-    // });
+    await newUser.save();
 
-    // await newUser.save();
+    if (role === 'patient') {
+      let newPatient = new Patient({
+        userId: newUser._id,
+      });
+      await newPatient.save();
+    }
 
-    // if (role === 'patient') {
-    //   let newPatient = new Patient({
-    //     userId: newUser._id,
-    //   });
-    //   await newPatient.save();
-    // }
+    if (role === 'doctor') {
+      let newDoctor = new Doctor({
+        userId: newUser._id,
+      });
 
-    // if (role === 'doctor') {
-    //   let newDoctor = new Doctor({
-    //     userId: newUser._id,
-    //   });
-
-    //   await newDoctor.save();
-    // }
+      await newDoctor.save();
+    }
 
     res.status(200).send({ message: 'Registration Successful' });
   } catch (error) {
@@ -87,8 +85,6 @@ exports.login = async (req, res) => {
         expiresIn: '5m',
       },
     );
-
-    // console.log(accessToken);
 
     res.status(200).send({
       message: 'Login successful',
