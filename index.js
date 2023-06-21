@@ -22,6 +22,22 @@ app.use(
   }),
 );
 
+// Define the CORS middleware function
+const corsMiddleware = (req, res, next) => {
+  const allowedOrigin = 'https://ayo-wzv4.onrender.com'; // Replace with your allowed origin
+
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+  res.setHeader('Access-Control-Allow-Methods', '*');
+  res.setHeader('Access-Control-Allow-Headers', '*');
+  next();
+};
+
+// Use the CORS middleware function in your Express application
+app.use(corsMiddleware);
+
+// Define your routes and handlers below
+// ...
+
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
