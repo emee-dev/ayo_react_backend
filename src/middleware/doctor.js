@@ -36,6 +36,7 @@ exports.createAppointment = async (req, res) => {
       data: appointment,
     });
   } catch (error) {
+    console.log(error)
     res.status(500).send({ message: 'Server error', data: null });
   }
 };
@@ -61,6 +62,7 @@ exports.getAllAppointments = async (req, res) => {
 
     res.send({ message: 'Got all appointments', data: appointments });
   } catch (error) {
+    console.log(error)
     res.status(500).send({ message: 'Server error', data: null });
   }
 };
@@ -83,6 +85,7 @@ exports.deleteAppointment = async (req, res) => {
       data: deleteEvent,
     });
   } catch (error) {
+    console.log(error)
     res.status(500).send({ message: 'Server error', data: null });
   }
 };
@@ -132,6 +135,7 @@ exports.createMedicalRecord = async (req, res) => {
 
     res.send({ message: 'Medical record was created', data: [] });
   } catch (error) {
+    console.log(error)
     res.status(500).send({ message: 'Server error', data: null });
   }
 };
@@ -180,6 +184,7 @@ exports.updateProfile = async (req, res) => {
 
     res.send({ message: 'Profile was updated', data: [] });
   } catch (error) {
+    console.log(error)
     res.status(500).send({ message: 'Server error', data: null });
   }
 };
@@ -196,6 +201,7 @@ exports.getAllPatients = async (req, res) => {
 
     res.status(200).send({ message: 'Got all patients', data: patients });
   } catch (error) {
+    console.log(error)
     res.status(500).send({ message: 'Server error', data: null });
   }
 };
@@ -224,6 +230,7 @@ exports.patientPrescriptions = async (req, res) => {
       data: patient?.prescriptions,
     });
   } catch (error) {
+    console.log(error)
     res.status(500).send({ message: 'Server error', data: null });
   }
 };

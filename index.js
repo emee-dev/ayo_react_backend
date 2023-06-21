@@ -51,7 +51,6 @@ app.use('/auth', api_route.Auth);
 app.use('/patient', api_route.PatientRoutes);
 app.use('/doctor', api_route.DoctorRoutes);
 
-// app.get("/test", apiLimiter, (req, res) => {
-//     console.log("Req: is working")
-//     res.send("Hi")
-// })
+app.get('/test', (req, res) => {
+  res.send('Hi');
+});

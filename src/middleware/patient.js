@@ -46,6 +46,7 @@ exports.getAllAppointments = async (req, res) => {
       .status(200)
       .send({ message: 'Got all appointments', data: patient.appointments });
   } catch (error) {
+    console.log(error);
     res.status(500).send({ message: 'Server error', data: null });
   }
 };
@@ -77,6 +78,7 @@ exports.updateProfile = async (req, res) => {
 
     res.send({ message: 'Profile was updated', data: null });
   } catch (error) {
+    console.log(error);
     res.status(500).send({ message: 'Server error', data: null });
   }
 };

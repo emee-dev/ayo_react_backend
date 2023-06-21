@@ -4,10 +4,12 @@ let mongodbAtlas = `mongodb+srv://${process.env.ACCOUNT_USERNAME}:${process.env.
 let localConnection = `mongodb://0.0.0.0:27017/ayo`;
 
 const connectionUrl =
-  process.env.NODE_ENV !== 'production' ? localConnection : mongodbAtlas;
+  process.env.NODE_ENV === 'development' ? localConnection : mongodbAtlas;
 
 const connectDb = async (cb) => {
   try {
+    console.log('Env', process.env.NODE_ENV);
+    console.log('Connection String', connectionUrl);
     mongoose.set('strictQuery', true);
     mongoose.connect(connectionUrl, {
       useNewUrlParser: true,
