@@ -16,7 +16,12 @@ const DB = require('./src/config/db')((error) => {
   app.listen(PORT, () => console.log(`....Server started....`));
 });
 
-app.use(cors());
+app.use(
+  cors({
+    origin: 'https://ayo-wzv4.onrender.com', // Replace with your allowed origin
+  }),
+);
+
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
