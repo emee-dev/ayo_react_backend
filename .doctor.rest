@@ -1,0 +1,79 @@
+GET http://localhost:7000/
+Content-Type: application/json
+
+### Get All Patients
+GET http://localhost:7000/doctor/patients?page=1&limit=2
+Content-Type: application/json
+
+
+
+### Search for one patient 
+POST http://localhost:7000/doctor/patients
+Content-Type: application/json
+
+{ 
+    "userId": "6480679afc13ae453a1ce27a"
+}
+
+
+### All Appointments
+POST http://localhost:7000/doctor/appointments
+Content-Type: application/json
+
+{
+    "doctorId": "6480679afc13ae453a1ce277"
+}
+
+
+### Create Appointment
+POST http://localhost:7000/doctor/appointments/create
+Content-Type: application/json
+
+{
+    "patient_id": "patientId",
+    "patient_name": "PatientName.firstname",
+    "doctor_id": "doctorId",
+    "doctor_name": "DoctorName.firstname",
+    "date": "2022-05-07"
+}
+
+### Delete Appointment
+DELETE http://localhost:7000/doctor/appointments
+Content-Type: application/json
+
+{
+    "eventId": "64884727fc13ae0b169008f3"
+}
+
+
+
+### Get prescription of patient
+POST http://localhost:7000/doctor/prescriptions
+Content-Type: application/json
+
+{
+    "patientId": "648e1f67ad6a451a71ba79d5"
+}
+
+
+### Create Medical Record
+POST http://localhost:7000/doctor/record
+Content-Type: application/json
+
+
+### Update Profile Doctor
+POST http://localhost:7000/doctor/profile
+Content-Type: application/json
+
+{ 
+    "doctorId": "hdk", 
+    "firstname": "firstla", 
+    "lastname": "lastla", 
+    "phone": "phonem", 
+    "specialization": "auths", 
+    "education": "sism", 
+    "licenseNumber": "osmcm", 
+    "location": "osmmc" 
+}
+
+

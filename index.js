@@ -18,15 +18,19 @@ const DB = require('./src/config/db')((error) => {
 
 app.use(
   cors({
-    origin: 'https://ayo-wzv4.onrender.com', // Replace with your allowed origin
+    origin: [process.env.FRONTEND_URL, 'http://localhost:3000'], // Replace with your allowed origin
   }),
 );
 
 // Define the CORS middleware function
 const corsMiddleware = (req, res, next) => {
-  const allowedOrigin = 'https://ayo-wzv4.onrender.com'; // Replace with your allowed origin
+  const allowedOrigins = [process.env.FRONTEND_URL, 'http://localhost:3000'];
 
-  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+
   res.setHeader('Access-Control-Allow-Methods', '*');
   res.setHeader('Access-Control-Allow-Headers', '*');
   next();

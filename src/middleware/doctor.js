@@ -36,7 +36,7 @@ exports.createAppointment = async (req, res) => {
       data: appointment,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).send({ message: 'Server error', data: null });
   }
 };
@@ -62,7 +62,7 @@ exports.getAllAppointments = async (req, res) => {
 
     res.send({ message: 'Got all appointments', data: appointments });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).send({ message: 'Server error', data: null });
   }
 };
@@ -85,7 +85,7 @@ exports.deleteAppointment = async (req, res) => {
       data: deleteEvent,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).send({ message: 'Server error', data: null });
   }
 };
@@ -135,7 +135,7 @@ exports.createMedicalRecord = async (req, res) => {
 
     res.send({ message: 'Medical record was created', data: [] });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).send({ message: 'Server error', data: null });
   }
 };
@@ -184,7 +184,7 @@ exports.updateProfile = async (req, res) => {
 
     res.send({ message: 'Profile was updated', data: [] });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).send({ message: 'Server error', data: null });
   }
 };
@@ -192,16 +192,71 @@ exports.updateProfile = async (req, res) => {
 // Get all patients records
 exports.getAllPatients = async (req, res) => {
   try {
-    // const { limit, skip } = req.body
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const filter = req.query.filter || null;
 
-    const patients = await Patient.find().populate('userId');
+    const skip = (page - 1) * limit;
 
-    if (!patients)
-      return res.status(400).send({ message: 'Patients not found', data: [] });
+    const pageCount = Math.ceil(
+      (await Patient.estimatedDocumentCount()) / limit,
+    );
 
-    res.status(200).send({ message: 'Got all patients', data: patients });
+    if (filter) {
+      const patient = await Patient.findOne({ userId: filter }).populate(
+        'userId',
+      );
+
+      if (!patient)
+        return res.status(400).send({
+          message: 'Patient not found',
+          data: [],
+        });
+
+      res.status(200).send({
+        message: 'Got a patient',
+        data: patient,
+        pageCount: pageCount,
+      });
+    } else {
+      const patients = await Patient.find()
+        .populate('userId')
+        .skip(skip)
+        .limit(limit);
+
+      if (!patients)
+        return res.status(400).send({
+          message: 'Patients not found',
+          data: [],
+        });
+
+      res.status(200).send({
+        message: 'Got all patients',
+        data: patients,
+        pageCount: pageCount,
+      });
+    }
   } catch (error) {
-    console.log(error)
+    console.log(error);
+    res.status(500).send({ message: 'Server error', data: null });
+  }
+};
+
+// Get a single patient from search
+exports.GetOnePatient = async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    const patient = await Patient.findOne({ userId: userId }).populate(
+      'userId',
+    );
+
+    if (!patient)
+      return res.status(400).send({ message: 'Patient not found', data: [] });
+
+    res.status(200).send({ message: 'Got a patient', data: patient });
+  } catch (error) {
+    console.log(error);
     res.status(500).send({ message: 'Server error', data: null });
   }
 };
@@ -230,7 +285,7 @@ exports.patientPrescriptions = async (req, res) => {
       data: patient?.prescriptions,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).send({ message: 'Server error', data: null });
   }
 };
