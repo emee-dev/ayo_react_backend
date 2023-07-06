@@ -8,7 +8,7 @@ exports.getAllMedicalRecords = async (req, res) => {
     let patientId = req.body?.patientId;
     if (!patientId)
       return res
-        .status(403)
+        .status(400)
         .send({ message: 'Patient id is required', data: [] });
 
     let records = await MedicalRecord.find({ patient_id: patientId })
@@ -35,7 +35,7 @@ exports.getAllAppointments = async (req, res) => {
 
     if (!patientId)
       return res
-        .status(403)
+        .status(400)
         .send({ message: 'Patient id is required', data: null });
 
     let patient = await Patient.findOne({ userId: patientId });

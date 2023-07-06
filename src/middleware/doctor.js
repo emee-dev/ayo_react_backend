@@ -171,7 +171,7 @@ exports.updateProfile = async (req, res) => {
 
     if (!doctorId)
       return res
-        .status(402)
+        .status(400)
         .send({ message: 'Doctor user id is required', data: [] });
 
     await User.updateOne(
