@@ -8,10 +8,15 @@ exports.createAppointment = async (req, res) => {
   try {
     let { patientId, doctorId, date } = req.body;
 
-    if (!patientId && !doctorId)
+    if (!patientId)
       return res
-        .status(402)
-        .send({ message: 'Doctor & Patient user id is required', data: [] });
+        .status(400)
+        .send({ message: 'Patient user id is required', data: [] });
+
+    if (!doctorId)
+      return res
+        .status(400)
+        .send({ message: 'Doctor user id is required', data: [] });
 
     let PatientName = await User.findOne({ _id: patientId });
     let DoctorName = await User.findOne({ _id: doctorId });
@@ -22,9 +27,9 @@ exports.createAppointment = async (req, res) => {
         $push: {
           appointments: {
             patient_id: patientId,
-            patient_name: PatientName.firstname,
+            patient_name: PatientName?.firstname,
             doctor_id: doctorId,
-            doctor_name: DoctorName.firstname,
+            doctor_name: DoctorName?.firstname,
             date,
           },
         },
@@ -105,14 +110,24 @@ exports.createMedicalRecord = async (req, res) => {
       diagnosis,
     } = req.body;
 
-    if (!patient_id && !doctor_id)
+    if (!patient_id)
       return res
-        .status(402)
-        .send({ message: 'Doctor & Patient user id is required', data: [] });
+        .status(400)
+        .send({ message: 'Patient user id is required', data: [] });
+
+    if (!doctor_id)
+      return res
+        .status(400)
+        .send({ message: 'Doctor user id is required', data: [] });
+
+    let patientName = await User.findOne({ _id: patient_id });
+    let doctorName = await User.findOne({ _id: doctor_id });
 
     let record = new MedicalRecord({
       patient_id,
+      patient_name: patientName?.firstname,
       doctor_id,
+      doctor_name: doctorName?.firstname,
       prescriptions: [
         {
           medication_name,

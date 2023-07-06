@@ -40,9 +40,15 @@ const medicalRecordSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
   },
+  patient_name: {
+    type: String,
+  },
   doctor_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
+  },
+  doctor_name: {
+    type: String,
   },
   prescriptions: [prescriptionSchema],
   createdAt: {
